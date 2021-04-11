@@ -12,8 +12,12 @@ import backGround from '../assets/image/japanese_paper_texture.png';
 
 import {images} from '../styles/global';
 
-export default function Bonsai() {
-  const [counter,setCounter] = useState(0);
+export default function Bonsai(props) {
+  // const [counter,setCounter] = useState(0);
+
+  const counter = props.counterProp;
+
+  const setCounter = props.setCounterProp;
   // const counter = navigation.getParam('counter');
   // let bonsaiStages  = bonsaiStage1;
 
@@ -65,13 +69,12 @@ export default function Bonsai() {
   return (
     <ImageBackground
       source={backGround}
-      style={styles.backgroundContainer}
+      style={styles.container}
     >
-    <View style={styles.container}>
-    <Image source = {images.count[counter]}/>
-    <Button onPress={incrementCounter} title = 'Done Meditating'/>
-      <StatusBar style="auto" />
-    </View>
+
+      <Image
+      source = {images.count[counter]}
+      style= {styles.bonsaiImage}/>
     </ImageBackground>
   );
 }
@@ -88,11 +91,8 @@ const styles = StyleSheet.create({
   },
 
   bonsaiImage: {
-    position: "absolute",
-    width: 40,
-    height: 50,
-    right: 10,
-    top: 10,
+    maxWidth: 300,
+    resizeMode: 'contain',
   },
 
 });

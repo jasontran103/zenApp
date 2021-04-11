@@ -30,12 +30,16 @@ const timers = [...Array(13).keys()].map((i) => (i === 0 ? 1 : i * 5));
 const itemSize = width * 0.38;
 const itemSpacing = (width - itemSize) / 2;
 
-export default function Timer() {
+export default function Timer(props) {
 
-  const [counter,setCounter] = useState(0);
+  // const [counter,setCounter] = useState(0);
+
+  const counter = props.counterProp;
+
+  const setCounter = props.setCounterProp;
 
   const incrementCounter = () => {
-      setCounter(counter+1)
+      setCounter(counter + 1)
   };
 
   const xScroll = React.useRef(new Animated.Value(0)).current;
@@ -58,7 +62,14 @@ export default function Timer() {
     };
   });
 
+    const combinedFunction = () => {
+      animations();
+      incrementCounter();
+    }
+
   const animations = React.useCallback(() => {
+
+    incrementCounter()
     animateTextInput.setValue(duration);
     Animated.sequence([
       Animated.timing(animateButton, {
@@ -91,18 +102,6 @@ export default function Timer() {
         useNativeDriver: true,
       }).start();
     });
-  }, [duration]);
-
-  const secondAnimation = React.useCallback(() => {
-
-    animateTextInput.setValue(duration);
-
-    Animated.timing(animateTextInput, {
-      toValue:height,
-      duration:duration * 100000,
-      useNativeDriver:true,
-
-      }).stop();
   }, [duration]);
 
   const opacity = animateButton.interpolate({
@@ -146,7 +145,7 @@ export default function Timer() {
             {
               justifyContent: "flex-end",
               alignItems: "center",
-              paddingBottom: 270,
+              paddingBottom: 220,
               opacity,
               transform: [
                 {
@@ -157,7 +156,7 @@ export default function Timer() {
           ]}
         >
           <Text style={styles.minutesText}>Minutes</Text>
-          <TouchableOpacity onPress={animations}>
+          <TouchableOpacity onPress={combinedFunction}>
             <View style={styles.roundButton} />
             <Text style={styles.startSessionTimer}>START SESSION</Text>
           </TouchableOpacity>

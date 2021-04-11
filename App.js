@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Timer from './components/Timer';
 // import BonsaiTree from './components/BonsaiTree';
@@ -11,13 +11,21 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 const Tab = createMaterialTopTabNavigator();
 
 export default function App() {
+  const [counter,setCounter] = useState(0);
+
+  const incrementCounter = () => {
+      setCounter(counter + 1)
+  };
+
   return (
     <NavigationContainer>
       <Tab.Navigator
         tabBarPosition = 'bottom' >
-        <Tab.Screen name="Timer" component={Timer} />
-        <Tab.Screen name="Bonsai" component={Bonsai} />
-        </Tab.Navigator>
+        <Tab.Screen name="Timer"
+       children={()=><Timer counterProp={counter} setCounterProp={setCounter}/>}
+    />
+        <Tab.Screen name="Bonsai" children={()=><Bonsai counterProp={counter} setCounterProp={setCounter}/>} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
